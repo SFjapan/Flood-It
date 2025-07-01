@@ -188,5 +188,6 @@ const change_tile_color = (i, j, color) => {
 const check_clear = () => {
     if (get_same_connected_tiles([0, 0], answer_color.rgb).length == col * row) {
         alert("clear");
+        reset();
     }
 }
