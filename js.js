@@ -31,6 +31,14 @@ const answer_color = color.yellow;
 answer_text.innerText = answer_color.name+"色に染めろ";
 answer_text.style.color = answer_color.rgb;
 answer_text.style.fontSize = "3em";
+const test_tile = [
+    [color.green.rgb, color.red.rgb,    color.red.rgb,    color.red.rgb,    color.blue.rgb,],
+    [color.green.rgb, color.yellow.rgb, color.yellow.rgb, color.yellow.rgb, color.red.rgb,],
+    [color.green.rgb, color.red.rgb,    color.red.rgb,    color.purple.rgb, color.purple.rgb,],
+    [color.green.rgb, color.yellow.rgb, color.yellow.rgb, color.blue.rgb,    color.red.rgb,],
+    [color.green.rgb, color.red.rgb,    color.red.rgb,    color.green.rgb,    color.green.rgb,],
+
+]
 let clicked_color = "";
 
 const get_same_connected_tiles = (start,target_color) =>{
@@ -60,20 +68,22 @@ const get_same_connected_tiles = (start,target_color) =>{
         for (const [dx, dy] of directions) {
             const nx = x + dx;
             const ny = y + dy;
-            const tile = tiles[nx].querySelectorAll('td')[ny];
-            const style = window.getComputedStyle(tile);
+            
             if (
                 nx >= 0 && nx < rows &&
                 ny >= 0 && ny < cols &&
-                !visited[nx][ny] &&
-                style.backgroundColor === target_color
+                !visited[nx][ny] 
             ) {
-                visited[nx][ny] = true;
-                queue.push([nx, ny]);
+                const tile = tiles[nx].querySelectorAll('td')[ny];
+                const style = window.getComputedStyle(tile);
+                if(style.backgroundColor === target_color){
+                    visited[nx][ny] = true;
+                    queue.push([nx, ny]);
+                }
+                
             }
         }
     }
-    console.log(result);
     return result;
 }
 
@@ -82,16 +92,16 @@ const change_tile_color = (i,j,color) =>{
 }
 
 const check_clear = () =>{
-     if(get_same_connected_tiles(answer_color.rgb).length == 25){
+     if(get_same_connected_tiles([0,0],answer_color.rgb).length == 25){
         alert("clear");
     }
 }
 
-change_tile_color(0,1,color.red.rgb);
-change_tile_color(1,1,color.blue.rgb);
-change_tile_color(3,2,color.red.rgb);
-change_tile_color(4,4,color.green.rgb);
-change_tile_color(2,0,color.purple.rgb);
+test_tile.map((e,i)=>{
+    e.map((f,j)=>{
+        tiles[i].querySelectorAll('td')[j].style.backgroundColor = f;
+    });
+});
 
 
 
